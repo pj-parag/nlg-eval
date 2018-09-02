@@ -23,7 +23,7 @@ Tested using
   - nltk 3.3
   - numpy 1.14.5
   - scikit-learn 0.19.1
-  - gensim 3.4.0
+  - gensim 3.5.0
   - Theano 1.0.2
   - scipy 1.1.0
   - six>=1.11
