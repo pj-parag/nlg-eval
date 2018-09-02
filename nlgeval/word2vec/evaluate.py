@@ -2,10 +2,7 @@
 # Licensed under the MIT license. See LICENSE.md file in the project root for full license information.
 import os
 import numpy as np
-try:
-    from gensim.models import KeyedVectors
-except ImportError:
-    from gensim.models import Word2Vec as KeyedVectors
+from gensim.models import Word2Vec as KeyedVectors
 
 
 class Embedding(object):
@@ -15,25 +12,25 @@ class Embedding(object):
         try:
             self.unk = self.m.vectors.mean(axis=0)
         except AttributeError:
-            self.unk = self.m.syn0.mean(axis=0)
+            self.unk = self.m.wv.syn0.mean(axis=0)
 
     @property
     def w2v(self):
-        return np.concatenate((self.m.syn0, self.unk[None,:]), axis=0)
+        return np.concatenate((self.m.wv.syn0, self.unk[None,:]), axis=0)
 
     def __getitem__(self, key):
         try:
-            return self.m.vocab[key].index
+            return self.m.wv.vocab[key].index
         except KeyError:
-            return len(self.m.syn0)
+            return len(self.m.wv.syn0)
 
     def vec(self, key):
         try:
-            vectors = self.m.vectors
+            vectors = self.m.wv.vectors
         except AttributeError:
-            vectors = self.m.syn0
+            vectors = self.m.wv.syn0
         try:
-            return vectors[self.m.vocab[key].index]
+            return vectors[self.m.wv.vocab[key].index]
         except KeyError:
             return self.unk
 
